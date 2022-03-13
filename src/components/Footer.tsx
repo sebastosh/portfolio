@@ -6,8 +6,7 @@ export const Footer = () => (
     bottom="0"
     maxWidth="48rem"
     p={3}
-    backgroundColor='bg'
-    border='1px'
+    zIndex='100'
   >  
             <Text>
           Built with <Code>Next.js</Code> + <Code>chakra-ui</Code> + <Code>TypeScript</Code>.

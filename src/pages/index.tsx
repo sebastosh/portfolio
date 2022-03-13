@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { AtSignIcon, CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
 import { DiGithubBadge } from 'react-icons/di';
-import { BsGlobe } from 'react-icons/bs';
+import { BsGlobe, BsGithub } from 'react-icons/bs';
 import { Layout } from '../components/Layout'
 import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import { Footer } from '../components/Footer'
@@ -108,18 +108,19 @@ const Index = ({ profile, items, notion }) => {
 
 
                 <HStack wrap='wrap' alignContent='flex-start'>
+                <Badge colorScheme='green' variant='outline' >{item.itemType}</Badge>
                   {item.topics.map((topic: String, i: Key) => {
                     return (<Badge key={i} colorScheme='cyan' variant='outline' >{topic}</Badge>)
                   })}
                 </HStack>
                 <Text>{item.description}</Text>
-                <Flex align='flex-end' justifyContent='flex-start' >
-                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.url + '#readme'} flexGrow={1} mr={2}><Badge variant='solid' colorScheme='blue' size='xs'><DiGithubBadge />Source</Badge> </ChakraLink> : null}
-                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.homepageUrl}><Badge variant='solid' colorScheme='blue' size='xs'><LinkIcon />Demo</Badge></ChakraLink> : null}
-                  {item.itemType === 'Writing' ? <ChakraLink isExternal href={item.url}><Badge variant='solid' colorScheme='blue' size='xs'><LinkIcon /> Read More</Badge></ChakraLink> : null}
-                  {item.itemType === 'Work' ? <ChakraLink isExternal href={item.url}><Badge variant='solid' colorScheme='blue' size='xs'><LinkIcon />URL</Badge></ChakraLink> : null}
-                </Flex>
-                <Spacer />
+                <HStack>
+                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.url + '#readme'} ><Button variant='solid' colorScheme='blue' size='xs'><BsGithub /> Source</Button> </ChakraLink> : null}
+                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.homepageUrl}><Button variant='solid' colorScheme='blue' size='xs'><LinkIcon /> Demo</Button></ChakraLink> : null}
+                  {item.itemType === 'Writing' ? <ChakraLink isExternal href={item.url}><Button variant='solid' colorScheme='blue' size='xs'><LinkIcon boxSize='1.5em' pr='4px'/> Read More</Button></ChakraLink> : null}
+                  {item.itemType === 'Work' ? <ChakraLink isExternal href={item.url}><Button variant='solid' colorScheme='blue' size='xs'><BsGlobe size='1.2em'/> URL</Button></ChakraLink> : null}
+                </HStack>
+           
 
 
 
