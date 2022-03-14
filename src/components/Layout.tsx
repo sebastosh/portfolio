@@ -1,15 +1,16 @@
 import {
-  Center,
   Container,
+  Flex,
   Heading,
   Link as ChakraLink,
-  Stack, StackProps,
+  Stack,
+  Spacer,
   Text
 } from '@chakra-ui/react'
-import { LinkIcon } from '@chakra-ui/icons'
 import { ReactNode } from 'react';
 import Head from 'next/head';
 
+import Nav from './Nav'
 import { DarkModeSwitch } from './DarkModeSwitch'
 import { Footer } from './Footer'
 
@@ -29,9 +30,8 @@ type Props = {
 export const Layout = ({ children, fullName, first, last, description, position, employer, employerURL }: Props) => {
 
   return (
-    <Container position='relative' mb={8} maxWidth='70vw' width={{ base: '100%', sm: '90%', md: '80%' }} >
-            <DarkModeSwitch />
-
+    <Container mb={8} maxWidth='100vw' width={{ base: '100%', sm: '90%', md: '80%' }} >
+           
     <Stack
       width="100%"
       maxWidth="128rem"
@@ -53,16 +53,29 @@ export const Layout = ({ children, fullName, first, last, description, position,
         <link rel='manifest' href='/site.webmanifest' />
       </Head>
       <Stack>
-      <Heading fontSize='20px' >
+
+        <Flex>
+        <Heading fontSize='20px' >
         <ChakraLink href='/'>
-          {first} <span>{last}</span>
+          {first} <Text display='inline-block'>{last}</Text>
         </ChakraLink>
         </Heading>
+        <Spacer />
+  
+              <DarkModeSwitch />
+  
+    
+
+
+
+
+        </Flex>
+
       <Text>
         {position} at the <ChakraLink
           isExternal
           href={employerURL}
-        ><LinkIcon /> {employer} 
+        >{employer} 
         </ChakraLink>.
       </Text>
       <Text>{description}</Text>

@@ -61,7 +61,7 @@ const Index = ({ profile, items, articlesArray }) => {
         </Button>
       </HStack>
       <SimpleGrid
-        minChildWidth='440px'
+        minChildWidth='455px'
         spacing='70px'
 
       >
@@ -86,7 +86,7 @@ const Index = ({ profile, items, articlesArray }) => {
               />
 
               <Flex direction='column' justifyItems='start' h='100%'>
-                <Text fontSize={20} fontWeight='bold' >{item.title}</Text>
+                <Text fontSize='26px' fontWeight='bold' >{item.title}</Text>
                 
                 <Text 
                   color={gray} 
@@ -98,7 +98,7 @@ const Index = ({ profile, items, articlesArray }) => {
                 <HStack wrap='wrap' alignContent='flex-start'>
 
                   {item.topics.map((topic: String, i: Key) => {
-                    return (<Badge key={i} colorScheme='cyan' variant='outline' p='3px' >{topic}</Badge>)
+                    return (<Badge key={i} colorScheme='cyan' variant='outline' >{topic}</Badge>)
                   })}
                 </HStack>
 
