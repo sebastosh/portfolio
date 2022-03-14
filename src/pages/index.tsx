@@ -2,35 +2,27 @@ import React, { useState, Key } from "react";
 import { ApolloClient, createHttpLink, InMemoryCache, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { Client } from '@notionhq/client';
-import Head from 'next/head';
 
-// import profile from '../data/profileData';
-import projects from '../data/projectData';
-
+// import projects from '../data/projectData';
 
 import {
   Badge,
   Button,
-  Container,
-  Center,
   Flex,
-  Heading,
   HStack,
+  Image,
   Link as ChakraLink,
   Text,
   SimpleGrid,
   Spacer,
-  Stack,
   useColorModeValue
 } from '@chakra-ui/react'
-import { AtSignIcon, CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
-import { DiGithubBadge } from 'react-icons/di';
+import { LinkIcon } from '@chakra-ui/icons'
+import { FaDev } from 'react-icons/fa';
 import { BsGlobe, BsGithub } from 'react-icons/bs';
 import { Layout } from '../components/Layout'
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
-import { Footer } from '../components/Footer'
 
-const Index = ({ profile, items, notion }) => {
+const Index = ({ profile, items, articlesArray }) => {
 
   const [filter, setNewFilter] = useState("");
 
@@ -46,111 +38,109 @@ const Index = ({ profile, items, notion }) => {
     );
 
   return (
-    <Container height="100vh">
-      <Head>
-        <title>{profile.properties.Name.title[0].plain_text}</title>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
-        <meta
-          name='description'
-          content={profile.properties.description.rich_text[0].plain_text}
-        />
-        <meta name='og:title' content={profile.properties.Name.title[0].plain_text} />
-        <link rel='icon' href='favicon.ico' />
-        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
-        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
-        <link rel='manifest' href='/site.webmanifest' />
-      </Head>
 
-      <Layout>
-        <Heading bgGradient='linear(to-l, #7928CA, #FF0080)'
-          bgClip='text'>
-          <ChakraLink href='/'>
-            {profile.properties.Name.title[0].plain_text}
-          </ChakraLink></Heading>
-        <Text>
-          {profile.properties.position.rich_text[0].plain_text} at the <ChakraLink
-            isExternal
-            href={profile.properties.employerURL.url}
-          >
-            {profile.properties.employer.rich_text[0].plain_text} <LinkIcon />
-          </ChakraLink>.
-        </Text>
-        <Text>{profile.properties.description.rich_text[0].plain_text}</Text>
+    <Layout
+      fullName={profile.properties.Name.title[0].plain_text}
+      first={profile.properties.first.rich_text[0].plain_text}
+      last={profile.properties.last.rich_text[0].plain_text}
+      description={profile.properties.description.rich_text[0].plain_text}
+      position={profile.properties.position.rich_text[0].plain_text}
+      employer={profile.properties.employer.rich_text[0].plain_text}
+      employerURL={profile.properties.employerURL.url}
+    >
 
-        <HStack spacing={5} mb={10}>
-          <Button size='sm' value='Work' onClick={handleFilterChange}>
-            Work
-          </Button>
-          <Button size='sm' value='Code' onClick={handleFilterChange}>
-            Code
-          </Button>
-          <Button size='sm' value='Writing' onClick={handleFilterChange}>
-            Writing
-          </Button>
-        </HStack>
-        <SimpleGrid minChildWidth='300px' spacing='30px' >
+      <HStack py='15px' margin='auto'>
+        <Button borderRadius='0' variant='outline'  size='sm' value='Work'  onClick={handleFilterChange}>
+          Work
+        </Button>
+        <Button borderRadius='0' variant='outline' size='sm' value='Code' onClick={handleFilterChange}>
+          Code
+        </Button>
+        <Button borderRadius='0' variant='outline' size='sm' value='Writing' onClick={handleFilterChange}>
+          Writing
+        </Button>
+      </HStack>
+      <SimpleGrid
+        minChildWidth='440px'
+        spacing='70px'
 
-          {filteredItems.map((item) => {
+      >
+        {filteredItems.map((item) => {
+          const date = new Date(item.date).toLocaleDateString('en-us', { year: 'numeric', month: 'short' });
+          
+          const imageAlt = 'Thumbnail image for ' + item.title
 
-            // const date = new Date(item.date).toLocaleDateString('en-us', { year: 'numeric', month: 'short' });
+          const gray = useColorModeValue('gray.700', 'gray.300')
 
-            const border = useColorModeValue('brand.dark', '')
+          
+          return (
+            <HStack key={item.id} spacing={4} alignItems='flex-start' >
 
-            return (
+              <Image
+                border='1px'
+                width={{ base: '100%', sm: '50%', md: '30%' }}
+                height='150px'
+                objectFit='cover'
+                src={item.thumbnail}
+                alt={imageAlt}
+              />
 
-              <Stack spacing={2} key={item.id} direction='column' h='140px'>
-
+              <Flex direction='column' justifyItems='start' h='100%'>
                 <Text fontSize={20} fontWeight='bold' >{item.title}</Text>
-
-
-
+                
+                <Text 
+                  color={gray} 
+                  mb={2}
+                  fontSize='14px'
+                  noOfLines={2}
+                  >{item.description}</Text>
 
                 <HStack wrap='wrap' alignContent='flex-start'>
-                <Badge colorScheme='green' variant='outline' >{item.itemType}</Badge>
+
                   {item.topics.map((topic: String, i: Key) => {
-                    return (<Badge key={i} colorScheme='cyan' variant='outline' >{topic}</Badge>)
+                    return (<Badge key={i} colorScheme='cyan' variant='outline' p='3px' >{topic}</Badge>)
                   })}
                 </HStack>
-                <Text>{item.description}</Text>
-                <HStack>
-                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.url + '#readme'} ><Button variant='solid' colorScheme='blue' size='xs'><BsGithub /> Source</Button> </ChakraLink> : null}
-                  {item.itemType === 'Code' ? <ChakraLink isExternal href={item.homepageUrl}><Button variant='solid' colorScheme='blue' size='xs'><LinkIcon /> Demo</Button></ChakraLink> : null}
-                  {item.itemType === 'Writing' ? <ChakraLink isExternal href={item.url}><Button variant='solid' colorScheme='blue' size='xs'><LinkIcon boxSize='1.5em' pr='4px'/> Read More</Button></ChakraLink> : null}
-                  {item.itemType === 'Work' ? <ChakraLink isExternal href={item.url}><Button variant='solid' colorScheme='blue' size='xs'><BsGlobe size='1.2em'/> URL</Button></ChakraLink> : null}
+
+<Spacer />
+                <HStack alignItems='end' >
+                  {item.itemType === 'Code' ?
+                    <ChakraLink isExternal href={item.url + '#readme'} >
+                      <Button aria-label="Link to Source Code" size='xs' variant='solid' borderRadius={3} colorScheme='gray' leftIcon={<BsGithub />}>
+                        Source
+                      </Button>
+                    </ChakraLink> : null
+                  }
+                  {item.itemType === 'Code' ?
+                    <ChakraLink isExternal href={item.homepageUrl}>
+                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<LinkIcon />}>
+                        Demo
+                      </Button>
+                    </ChakraLink> : null
+                  }
+                  {item.itemType === 'Writing' ?
+                    <ChakraLink isExternal href={item.url}>
+                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<FaDev />}>
+                        Read More
+                      </Button>
+                    </ChakraLink> : null
+                  }
+                  {item.itemType === 'Work' ?
+                    <ChakraLink isExternal href={item.url}>
+                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<BsGlobe />}>
+                        URL
+                      </Button>
+                    </ChakraLink> : null
+                  }
                 </HStack>
-           
 
+              </Flex>
 
-
-
-
-
-
-              </Stack>
-
-            )
-
-          })
-          }
-        </SimpleGrid>
-
-
-        <Center >
-
-
-
-
-
-        </Center>
-
-
-      </Layout>
-      <Footer />
-      <DarkModeSwitch />
-
-    </Container>
+            </HStack>
+          )
+        })}
+      </SimpleGrid>
+    </Layout>
   )
 }
 
@@ -174,8 +164,7 @@ export async function getStaticProps() {
     return newObj;
   }
 
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
+  // Get posts from Github with graphql
   const httpLink = createHttpLink({
     uri: 'https://api.github.com/graphql',
   });
@@ -261,9 +250,26 @@ export async function getStaticProps() {
   const pageId = '1539b72fb7684bb8afe08e4045494cce';
   const profile = await getNotion.pages.retrieve({ page_id: pageId });
 
+  function notionCleanup(object) {
 
-  const notion = [profile, projectsDB]
+    const withProps = {
+      id: object.id,
+      date: object.properties.date.date.start,
+      title: object.properties.Title.title[0].plain_text,
+      url: object.properties.url.url,
+      source: object.properties.source.url,
+      description: object.properties.description.rich_text[0].plain_text,
+      thumbnail: object.properties.thumbnail.files[0].file.url,
+      itemType: 'Work',
+     };
 
+    const getTopics = object.properties.Topics.multi_select.map(topic => topic.name);
+
+    const newObj = { ...withProps, topics: getTopics };
+
+    return newObj;
+  }
+  const projects = projectsDB.results.map(project => notionCleanup(project))
 
   const items = [...projects, ...repos, ...articles].sort(function (a, b) {
     return +new Date(b.date) - +new Date(a.date);
@@ -273,7 +279,7 @@ export async function getStaticProps() {
     props: {
       profile,
       items,
-      notion,
+      articlesArray,
     },
   };
 }
