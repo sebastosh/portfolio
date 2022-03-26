@@ -77,6 +77,7 @@ const Index = ({ profile, items, articlesArray }) => {
             <HStack key={item.id} spacing={4} alignItems='flex-start' >
 
               <Image
+                display={{ base: 'none', sm: 'block', md: 'block' }}
                 border='1px'
                 width={{ base: '100%', sm: '50%', md: '30%' }}
                 height='150px'
@@ -94,6 +95,17 @@ const Index = ({ profile, items, articlesArray }) => {
                   fontSize='14px'
                   noOfLines={2}
                   >{item.description}</Text>
+                
+                <Image
+                display={{ base: 'block', sm: 'none', md: 'none' }}
+                border='1px'
+                width={{ base: '100%', sm: '50%', md: '30%' }}
+                height='150px'
+                objectFit='cover'
+                src={item.thumbnail}
+                alt={imageAlt}
+              />
+
 
                 <HStack wrap='wrap' alignContent='flex-start'>
 

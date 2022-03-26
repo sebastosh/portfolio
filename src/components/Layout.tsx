@@ -10,7 +10,6 @@ import {
 import { ReactNode } from 'react';
 import Head from 'next/head';
 
-import Nav from './Nav'
 import { DarkModeSwitch } from './DarkModeSwitch'
 import { Footer } from './Footer'
 
@@ -23,14 +22,18 @@ type Props = {
   position?: string
   employer?: string
   employerURL?: string
-  menu?: string
 };
 
 
 export const Layout = ({ children, fullName, first, last, description, position, employer, employerURL }: Props) => {
 
   return (
-    <Container mb={8} maxWidth='100vw' width={{ base: '100%', sm: '90%', md: '80%' }} >
+    <Container 
+    mb={8} 
+    maxWidth='100vw' 
+    width={{ base: '100%', sm: '90%', md: '80%' }}
+    padding={{ base: '0.2rem', sm: '1rem', md: '1rem' }}
+     >
            
     <Stack
       width="100%"
@@ -46,7 +49,7 @@ export const Layout = ({ children, fullName, first, last, description, position,
           content={description}
         />
         <meta name='og:title' content={fullName} />
-        <link rel='icon' href='favicon.ico' />
+        <link rel='icon' href='/favicon.ico' />
         <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
