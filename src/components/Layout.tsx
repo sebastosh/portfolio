@@ -32,7 +32,7 @@ export const Layout = ({ children, fullName, first, last, description, position,
     mb={8} 
     maxWidth='100vw' 
     width={{ base: '100%', sm: '90%', md: '80%' }}
-    padding={{ base: '0.2rem', sm: '1rem', md: '1rem' }}
+    padding={{ base: '0.7rem', sm: '1rem', md: '1rem' }}
      >
            
     <Stack
