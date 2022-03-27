@@ -25,6 +25,7 @@ import { Layout } from '../components/Layout'
 const Index = ({ profile, items }) => {
 
   const gray = useColorModeValue('gray.700', 'gray.300')
+  const blue = useColorModeValue('blue.800', 'white')
 
   const [filter, setNewFilter] = useState("");
 
@@ -51,7 +52,7 @@ const Index = ({ profile, items }) => {
       employerURL={profile.properties.employerURL.url}
     >
 
-      <HStack py='15px' margin='auto'>
+      <HStack py={6}>
         <Button borderRadius='0' variant='outline' size='sm' value='Work' onClick={handleFilterChange}>
           Work
         </Button>
@@ -63,8 +64,8 @@ const Index = ({ profile, items }) => {
         </Button>
       </HStack>
       <SimpleGrid
-        minChildWidth='455px'
-        spacing='70px'
+        minChildWidth={{ base: '100%', sm: '500px', md: '455px' }}
+        spacing={{ base: '35px', sm: '40px', md: '70px' }}
 
       >
         {filteredItems.map((item) => {
@@ -74,7 +75,11 @@ const Index = ({ profile, items }) => {
           const imageAlt = 'Thumbnail image for ' + item.title
 
           return (
-            <HStack key={item.id} spacing={4} alignItems='flex-start' >
+            <Flex 
+              key={item.id}
+              alignItems='flex-start'
+              direction={{ base: 'column', sm: 'row', md: 'row' }}
+            >
 
               <Image
                 display={{ base: 'none', sm: 'block', md: 'block' }}
@@ -84,10 +89,11 @@ const Index = ({ profile, items }) => {
                 objectFit='cover'
                 src={item.thumbnail}
                 alt={imageAlt}
+                mr='.5em'
               />
 
-              <Flex direction='column' justifyItems='start' h='100%'>
-                <Text fontSize='26px' fontWeight='bold' >{item.title}</Text>
+              <Flex direction='column' justifyItems='start' h='100%' w='100%'>
+                <Text fontSize='26px' fontWeight='bold' lineHeight={1} >{item.title}</Text>
 
                 <Text
                   color={gray}
@@ -104,18 +110,24 @@ const Index = ({ profile, items }) => {
                   objectFit='cover'
                   src={item.thumbnail}
                   alt={imageAlt}
+                  mb='0.5em'
                 />
 
+                <Flex
+                  direction={{ base: 'row', sm: 'column', md: 'column' }}  
+                  justify='space-between'
+                  flex='1'
+                >
+      <Flex
+        wrap='wrap' gap='8px' alignItems='center'
 
-                <HStack wrap='wrap' alignContent='flex-start'>
-
+      >
                   {item.topics.map((topic: String, i: Key) => {
-                    return (<Badge key={i} colorScheme='cyan' variant='outline' >{topic}</Badge>)
+                    return (<Badge key={i} color={blue} variant='outline' >{topic}</Badge>)
                   })}
-                </HStack>
-
-                <Spacer />
-                <HStack alignItems='end' >
+                </Flex>
+<Spacer />
+                <HStack>
                   {item.itemType === 'Code' ?
                     <ChakraLink isExternal href={item.url + '#readme'} >
                       <Button aria-label="Link to Source Code" size='xs' variant='solid' borderRadius={3} colorScheme='gray' leftIcon={<BsGithub />}>
@@ -125,30 +137,34 @@ const Index = ({ profile, items }) => {
                   }
                   {item.itemType === 'Code' ?
                     <ChakraLink isExternal href={item.homepageUrl}>
-                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<LinkIcon />}>
+                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<LinkIcon />}>
                         Demo
                       </Button>
                     </ChakraLink> : null
                   }
                   {item.itemType === 'Writing' ?
                     <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<FaDev />}>
-                        Read More
+                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<FaDev />}>
+                        Article
                       </Button>
                     </ChakraLink> : null
                   }
                   {item.itemType === 'Work' ?
                     <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} colorScheme='blue' leftIcon={<BsGlobe />}>
+                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<BsGlobe />}>
                         URL
                       </Button>
                     </ChakraLink> : null
                   }
                 </HStack>
+                </Flex>
+
+
+
 
               </Flex>
 
-            </HStack>
+            </Flex>
           )
         })}
       </SimpleGrid>
