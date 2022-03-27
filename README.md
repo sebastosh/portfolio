@@ -1,39 +1,43 @@
-# Example app with [chakra-ui](https://github.com/chakra-ui/chakra-ui) and TypeScript
+# One Page Portfolio using NextJS,  [chakra-ui](https://github.com/chakra-ui/chakra-ui), and TypeScript
 
-This example features how to use [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with TypeScript.
+Based from this [Next.js starter template](https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript) using [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with TypeScript.
 
-Next.js and chakra-ui have built-in TypeScript declarations, so we'll get autocompletion for their modules straight away.
+The app uses [`getStaticProps`🔗](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)  pulling data from three different services to populate the index of projects displayed:
 
-We are connecting the Next.js `_app.js` with `chakra-ui`'s Provider and theme so the pages can have app-wide dark/light mode. We are also creating some components which shows the usage of `chakra-ui`'s style props.
-
-## Preview
-
-Preview the example live on [StackBlitz](http://stackblitz.com/):
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript)
-
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript&project-name=with-chakra-ui-typescript&repository-name=with-chakra-ui-typescript)
+- Pinned repositories from your Github Profile using the [Github graphQL API](https://docs.github.com/en/graphql)
+- A Notion page for Profile and database table of Work projects, using [Notion's API](https://developers.notion.com).
+- Any tech blog posts posted from a Dev.to profile, using the [DEV API](https://developers.forem.com/api).
 
 ## How to use
 
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+Clone this repository:
 
 ```bash
-npx create-next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
-# or
-yarn create next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
+git clone git@github.com:sebastosh/portfolio.git
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+cd into directory and install node modules:
 
-## Notes
+```bash
+cd portfolio
+yarn install
+```
 
-Chakra has supported Gradients and RTL in `v1.1`. To utilize RTL, [add RTL direction and swap](https://chakra-ui.com/docs/features/rtl-support).
+You will need to define the following `.env` variables:
 
-If you don't have multi-direction app, you should make `<Html lang="ar" dir="rtl">` inside `_document.ts`.
+```env
+DEV_TOKEN=<dev-token>
+GITHUB_ACCESS_TOKEN=<github-accesstoken>
+NOTION_TOKEN=<notion-api-accesstoken>
+NOTION_PAGE_ID=<notion-profile-page-id>
+NOTION_PROJECTS_ID=<notion-projects-table-id>
+```
+
+Start up your local dev server:
+
+```bash
+yarn dev
+```
+
+___
+[![Netlify Status](https://api.netlify.com/api/v1/badges/dde7c0b3-fdd7-4202-a86c-1ee144215e73/deploy-status)](https://app.netlify.com/sites/sebastiensanzdesantamaria/deploys)

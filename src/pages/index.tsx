@@ -22,7 +22,9 @@ import { FaDev } from 'react-icons/fa';
 import { BsGlobe, BsGithub } from 'react-icons/bs';
 import { Layout } from '../components/Layout'
 
-const Index = ({ profile, items, articlesArray }) => {
+const Index = ({ profile, items }) => {
+
+  const gray = useColorModeValue('gray.700', 'gray.300')
 
   const [filter, setNewFilter] = useState("");
 
@@ -50,7 +52,7 @@ const Index = ({ profile, items, articlesArray }) => {
     >
 
       <HStack py='15px' margin='auto'>
-        <Button borderRadius='0' variant='outline'  size='sm' value='Work'  onClick={handleFilterChange}>
+        <Button borderRadius='0' variant='outline' size='sm' value='Work' onClick={handleFilterChange}>
           Work
         </Button>
         <Button borderRadius='0' variant='outline' size='sm' value='Code' onClick={handleFilterChange}>
@@ -66,13 +68,11 @@ const Index = ({ profile, items, articlesArray }) => {
 
       >
         {filteredItems.map((item) => {
-          const date = new Date(item.date).toLocaleDateString('en-us', { year: 'numeric', month: 'short' });
-          
+
+          // const date = new Date(item.date).toLocaleDateString('en-us', { year: 'numeric', month: 'short' });
+
           const imageAlt = 'Thumbnail image for ' + item.title
 
-          const gray = useColorModeValue('gray.700', 'gray.300')
-
-          
           return (
             <HStack key={item.id} spacing={4} alignItems='flex-start' >
 
@@ -88,23 +88,23 @@ const Index = ({ profile, items, articlesArray }) => {
 
               <Flex direction='column' justifyItems='start' h='100%'>
                 <Text fontSize='26px' fontWeight='bold' >{item.title}</Text>
-                
-                <Text 
-                  color={gray} 
+
+                <Text
+                  color={gray}
                   mb={2}
                   fontSize='14px'
                   noOfLines={2}
-                  >{item.description}</Text>
-                
+                >{item.description}</Text>
+
                 <Image
-                display={{ base: 'block', sm: 'none', md: 'none' }}
-                border='1px'
-                width={{ base: '100%', sm: '50%', md: '30%' }}
-                height='150px'
-                objectFit='cover'
-                src={item.thumbnail}
-                alt={imageAlt}
-              />
+                  display={{ base: 'block', sm: 'none', md: 'none' }}
+                  border='1px'
+                  width={{ base: '100%', sm: '50%', md: '30%' }}
+                  height='150px'
+                  objectFit='cover'
+                  src={item.thumbnail}
+                  alt={imageAlt}
+                />
 
 
                 <HStack wrap='wrap' alignContent='flex-start'>
@@ -114,7 +114,7 @@ const Index = ({ profile, items, articlesArray }) => {
                   })}
                 </HStack>
 
-<Spacer />
+                <Spacer />
                 <HStack alignItems='end' >
                   {item.itemType === 'Code' ?
                     <ChakraLink isExternal href={item.url + '#readme'} >
@@ -271,9 +271,9 @@ export async function getStaticProps() {
       url: object.properties.url.url,
       source: object.properties.source.url,
       description: object.properties.description.rich_text[0].plain_text,
-      thumbnail: object.properties.thumbnail.files[0].file.url,
+      thumbnail: object.properties.thumbnail.files[0].name,
       itemType: 'Work',
-     };
+    };
 
     const getTopics = object.properties.Topics.multi_select.map(topic => topic.name);
 
@@ -290,8 +290,7 @@ export async function getStaticProps() {
   return {
     props: {
       profile,
-      items,
-      articlesArray,
+      items
     },
   };
 }
