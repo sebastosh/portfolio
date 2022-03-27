@@ -22,6 +22,7 @@ import { FaDev } from 'react-icons/fa';
 import { BsGlobe, BsGithub } from 'react-icons/bs';
 import { Layout } from '../components/Layout'
 
+
 const Index = ({ profile, items }) => {
 
   const gray = useColorModeValue('gray.700', 'gray.300')
