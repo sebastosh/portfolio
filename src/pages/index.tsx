@@ -20,7 +20,8 @@ import {
 } from '@chakra-ui/react'
 import { LinkIcon } from '@chakra-ui/icons'
 import { FaDev } from 'react-icons/fa';
-import { BsGlobe, BsGithub } from 'react-icons/bs';
+import { BsGlobe, BsGithub, BsTools, BsFileEarmarkPdfFill, BsPencil } from 'react-icons/bs';
+import { MdWork } from 'react-icons/md';
 import { Layout } from '../components/Layout'
 
 
@@ -45,7 +46,7 @@ const Index = ({ profile, items }) => {
     );
 
   const skills = profile.properties.skills.multi_select
-
+  const resume = profile.properties.resume.files[0].name
   return (
 
     <Layout
@@ -59,19 +60,24 @@ const Index = ({ profile, items }) => {
     >
 
       <HStack py={6}>
-        <Button borderRadius='0' variant='outline' size='sm' value='Work' onClick={handleFilterChange}>
+        <Button leftIcon={<MdWork />} variant='outline' size='sm' value='Work' onClick={handleFilterChange}>
           Work
         </Button>
-        <Button borderRadius='0' variant='outline' size='sm' value='Code' onClick={handleFilterChange}>
+        <Button leftIcon={<BsGithub />} variant='outline' size='sm' value='Code' onClick={handleFilterChange}>
           Code
         </Button>
-        <Button borderRadius='0' variant='outline' size='sm' value='Writing' onClick={handleFilterChange}>
+        <Button leftIcon={<BsPencil />} variant='outline' size='sm' value='Writing' onClick={handleFilterChange}>
           Writing
         </Button>
-        <Button borderRadius='0' variant='outline' size='sm' value='Skills' onClick={handleFilterChange}>
+        <Spacer />
+        <Button aria-label="Download Resume" size='sm' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsTools />} value='Skills' onClick={handleFilterChange}>
           Skills
         </Button>
-
+        <ChakraLink isExternal href={resume}>
+                      <Button aria-label="Download Resume" size='sm' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsFileEarmarkPdfFill />}>
+                        Resume
+                      </Button>
+                    </ChakraLink>
       </HStack>
 
 
@@ -161,21 +167,21 @@ const Index = ({ profile, items }) => {
                   }
                   {item.itemType === 'Code' ?
                     <ChakraLink isExternal href={item.homepageUrl}>
-                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<LinkIcon />}>
+                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<LinkIcon />}>
                         Demo
                       </Button>
                     </ChakraLink> : null
                   }
                   {item.itemType === 'Writing' ?
                     <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<FaDev />}>
+                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<FaDev />}>
                         Article
                       </Button>
                     </ChakraLink> : null
                   }
                   {item.itemType === 'Work' ?
                     <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue.900' leftIcon={<BsGlobe />}>
+                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsGlobe />}>
                         URL
                       </Button>
                     </ChakraLink> : null

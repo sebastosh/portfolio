@@ -60,9 +60,9 @@ export const Layout = ({ children, fullName, first, last, description, position,
       <Stack>
 
         <Flex>
-        <Heading fontSize='20px' >
+        <Heading  fontSize='20px' >
         <ChakraLink href='/'>
-          {first} <Text display='inline-block'>{last}</Text>
+          {fullName}
         </ChakraLink>
         </Heading>
         <Spacer />

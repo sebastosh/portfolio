@@ -20,9 +20,7 @@ const theme = extendTheme({
   config,
   colors: {
     bg: '#1a202c',
-    Work: 'blue',
-    Code: 'teal',
-    Writing: 'green'
+    blue:'#1A365D',
   },
   components: {
     Badge: {
