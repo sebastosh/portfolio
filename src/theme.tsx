@@ -15,15 +15,41 @@ const breakpoints = createBreakpoints({
 })
 
 const theme = extendTheme({
+  fonts,
+  breakpoints,
+  config,
   colors: {
     bg: '#1a202c',
     Work: 'blue',
     Code: 'teal',
     Writing: 'green'
   },
-  fonts,
-  breakpoints,
-  config,
+  components: {
+    Badge: {
+      // 1. We can update the base styles
+      baseStyle: {
+        fontWeight: 'medium', // Normally, it is "semibold"
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        xl: {
+          fontSize: '18px',
+          px: '5px',
+        },
+      },
+      // 3. We can add a new visual variant
+      variants: {
+        'with-shadow': {
+          // bg: props.colorMode === 'dark' ? 'red.300' : 'red.500',
+          boxShadow: '1px 1px 0 2px  #efdfde',
+        },
+        // 4. We can override existing variants
+        // outline: (props) => ({
+        //   boxShadow: '1px 1px 0 2px #efdfde',
+        // }),
+      },
+    },
+  },
 })
 
 export default theme

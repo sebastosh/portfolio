@@ -8,6 +8,7 @@ import { Client } from '@notionhq/client';
 import {
   Badge,
   Button,
+  IconButton,
   Flex,
   HStack,
   Image,
@@ -31,7 +32,9 @@ const Index = ({ profile, items }) => {
   const [filter, setNewFilter] = useState("");
 
   const handleFilterChange = (event) => {
+    console.log("🚀 ~ file: index.tsx ~ line 36 ~ handleFilterChange ~ event.target.value", event.target.value)
     setNewFilter(event.target.value);
+
   };
 
   const filteredItems = !filter
@@ -40,6 +43,8 @@ const Index = ({ profile, items }) => {
       // item.itemType.toLowerCase().includes(filter.toLowerCase())
       item.itemType.includes(filter)
     );
+
+  const skills = profile.properties.skills.multi_select
 
   return (
 
@@ -63,12 +68,30 @@ const Index = ({ profile, items }) => {
         <Button borderRadius='0' variant='outline' size='sm' value='Writing' onClick={handleFilterChange}>
           Writing
         </Button>
+        <Button borderRadius='0' variant='outline' size='sm' value='Skills' onClick={handleFilterChange}>
+          Skills
+        </Button>
+
       </HStack>
+
+
+      {filter === 'Skills' ?
+        <Flex wrap='wrap' gap='9px' >
+          {skills.map((skill) => {
+            return (<Badge size='xl' key={skill.id} variant='outline' >{skill.name}</Badge>)
+          })}
+        </Flex>:null
+      }
+
+
+
       <SimpleGrid
         minChildWidth={{ base: '100%', sm: '500px', md: '455px' }}
         spacing={{ base: '35px', sm: '40px', md: '70px' }}
 
       >
+
+
         {filteredItems.map((item) => {
 
           // const date = new Date(item.date).toLocaleDateString('en-us', { year: 'numeric', month: 'short' });
