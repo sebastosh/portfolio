@@ -2,13 +2,13 @@
 
 Based from this [Next.js starter template](https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript) using [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with TypeScript.
 
-The app uses [`getStaticProps`🔗](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)  pulling data from three different services to populate the index of projects displayed:
+The app uses [🔗`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching/get-static-props) to pull data from three different services and populate an index of displayable information:
 
-- Pinned repositories from your Github Profile using the [Github graphQL API](https://docs.github.com/en/graphql)
-- A Notion page for Profile and database table of Work projects, using [Notion's API](https://developers.notion.com).
+- Pinned repositories from your Github Profile using [Github's graphQL API](https://docs.github.com/en/graphql)
+- A Notion page for Profile and Notion table of Projects, using [Notion's API](https://developers.notion.com).
 - Any tech blog posts posted from a Dev.to profile, using the [DEV API](https://developers.forem.com/api).
 
-## How to use
+## Get Started
 
 Clone this repository:
 
@@ -23,7 +23,7 @@ cd portfolio
 yarn install
 ```
 
-You will need to define the following `.env` variables:
+Define the following `.env.local` variables:
 
 ```env
 DEV_TOKEN=<dev-token>

@@ -34,7 +34,6 @@ export const Layout = ({ children, fullName, first, last, description }: Props) 
       maxWidth='100vw'
       w={{ base: '100%', sm: '80%', md: '60%' }}
       p={{ base: '0.7rem', sm: '1rem', md: '1rem' }}
-      border='1px'
     >
 
       <Head>
