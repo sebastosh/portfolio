@@ -8,22 +8,25 @@ import { Client } from '@notionhq/client';
 import {
   Badge,
   Button,
-  IconButton,
   Flex,
+  Heading,
   HStack,
   Image,
   Link as ChakraLink,
-  Text,
   SimpleGrid,
   Spacer,
-  useColorModeValue
+  Stack,
+  Text,
+  useColorModeValue,
+  VStack,
 } from '@chakra-ui/react'
 import { LinkIcon } from '@chakra-ui/icons'
 import { FaDev } from 'react-icons/fa';
 import { BsGlobe, BsGithub, BsTools, BsFileEarmarkPdfFill, BsPencil } from 'react-icons/bs';
 import { MdWork } from 'react-icons/md';
 import { Layout } from '../components/Layout'
-
+import { DarkModeSwitch } from '../components/DarkModeSwitch'
+import { SP } from "next/dist/shared/lib/utils";
 
 const Index = ({ profile, items }) => {
 
@@ -33,9 +36,7 @@ const Index = ({ profile, items }) => {
   const [filter, setNewFilter] = useState("");
 
   const handleFilterChange = (event) => {
-    console.log("🚀 ~ file: index.tsx ~ line 36 ~ handleFilterChange ~ event.target.value", event.target.value)
     setNewFilter(event.target.value);
-
   };
 
   const filteredItems = !filter
@@ -45,56 +46,95 @@ const Index = ({ profile, items }) => {
       item.itemType.includes(filter)
     );
 
+  const fullName = profile.properties.Name.title[0].plain_text
+  const first = profile.properties.first.rich_text[0].plain_text
+  const last = profile.properties.last.rich_text[0].plain_text
+  const description = profile.properties.description.rich_text[0].plain_text
+  const position = profile.properties.position.rich_text[0].plain_text
+  const employer = profile.properties.employer.rich_text[0].plain_text
+  const employerURL = profile.properties.employerURL.url
+
   const skills = profile.properties.skills.multi_select
   const resume = profile.properties.resume.files[0].name
+  
   return (
 
     <Layout
-      fullName={profile.properties.Name.title[0].plain_text}
-      first={profile.properties.first.rich_text[0].plain_text}
-      last={profile.properties.last.rich_text[0].plain_text}
-      description={profile.properties.description.rich_text[0].plain_text}
-      position={profile.properties.position.rich_text[0].plain_text}
-      employer={profile.properties.employer.rich_text[0].plain_text}
-      employerURL={profile.properties.employerURL.url}
-    >
+    fullName={profile.properties.Name.title[0].plain_text}
+    first={profile.properties.first.rich_text[0].plain_text}
+    last={profile.properties.last.rich_text[0].plain_text}
+    description={profile.properties.description.rich_text[0].plain_text}
+    >      
+    <DarkModeSwitch resume={resume} />
+    <VStack align={{ sm: 'start', md: 'center' }}>
+      <Stack >
+  
+      <Flex 
+      direction={{ base: 'column', sm: 'row' }}
+      >
+      <Badge fontSize='22px' >
+          <ChakraLink href='/'>
+            {first} {last}
+          </ChakraLink>
+        </Badge>
 
-      <HStack py={6}>
-        <Button leftIcon={<MdWork />} variant='outline' size='sm' value='Work' onClick={handleFilterChange}>
-          Work
-        </Button>
-        <Button leftIcon={<BsGithub />} variant='outline' size='sm' value='Code' onClick={handleFilterChange}>
-          Code
-        </Button>
-        <Button leftIcon={<BsPencil />} variant='outline' size='sm' value='Writing' onClick={handleFilterChange}>
-          Writing
-        </Button>
-        <Spacer />
+        <Flex gap='10px' justify='center'>
         <Button aria-label="Download Resume" size='sm' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsTools />} value='Skills' onClick={handleFilterChange}>
           Skills
         </Button>
         <ChakraLink isExternal href={resume}>
-                      <Button aria-label="Download Resume" size='sm' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsFileEarmarkPdfFill />}>
-                        Resume
-                      </Button>
-                    </ChakraLink>
-      </HStack>
+          <Button aria-label="Download Resume" size='sm' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsFileEarmarkPdfFill />}>
+            Resume
+          </Button>
+        </ChakraLink>
+        </Flex>
+      </Flex>
+<Spacer />
+        {/* HEADER */}
+        <Text>
+          {position} at the <ChakraLink
+            isExternal
+            href={employerURL}
+          >{employer}
+          </ChakraLink>.
+        </Text>
+        <Text>{description}</Text>
+        
 
+          <Flex gap='10px' justify='center'>
+          <Button leftIcon={<MdWork />} variant='outline' size='md' value='Work' onClick={handleFilterChange}>
+          Work
+        </Button>
+        <Button leftIcon={<BsGithub />} variant='outline' size='md' value='Code' onClick={handleFilterChange}>
+          Code
+        </Button>
+        <Button leftIcon={<BsPencil />} variant='outline' size='md' value='Writing' onClick={handleFilterChange}>
+          Writing
+        </Button>
+    
+        
+  
 
+      </Flex>
+      </Stack>
+    </VStack>
+
+      {/* CONTENT */}
+ 
       {filter === 'Skills' ?
         <Flex wrap='wrap' gap='9px' >
           {skills.map((skill) => {
             return (<Badge size='xl' key={skill.id} variant='outline' >{skill.name}</Badge>)
           })}
-        </Flex>:null
+        </Flex> : null
       }
 
 
 
       <SimpleGrid
-        minChildWidth={{ base: '100%', sm: '500px', md: '455px' }}
-        spacing={{ base: '35px', sm: '40px', md: '70px' }}
-
+        minChildWidth={{ base: '100%', sm: '500px', md: '350px' }}
+        spacing={{ base: '10px', sm: '20px', md: '30px' }}
+        mt={8}
       >
 
 
@@ -105,7 +145,7 @@ const Index = ({ profile, items }) => {
           const imageAlt = 'Thumbnail image for ' + item.title
 
           return (
-            <Flex 
+            <Flex
               key={item.id}
               alignItems='flex-start'
               direction={{ base: 'column', sm: 'row', md: 'row' }}
@@ -114,7 +154,7 @@ const Index = ({ profile, items }) => {
               <Image
                 display={{ base: 'none', sm: 'block', md: 'block' }}
                 border='1px'
-                width={{ base: '100%', sm: '50%', md: '30%' }}
+                width={{ base: '100%', sm: '50%', md: '150px' }}
                 height='150px'
                 objectFit='cover'
                 src={item.thumbnail}
@@ -144,49 +184,49 @@ const Index = ({ profile, items }) => {
                 />
 
                 <Flex
-                  direction={{ base: 'row', sm: 'column', md: 'column' }}  
+                  direction={{ base: 'row', sm: 'column', md: 'column' }}
                   justify='space-between'
                   flex='1'
                 >
-      <Flex
-        wrap='wrap' gap='8px' alignItems='center'
+                  <Flex
+                    wrap='wrap' gap='8px' alignItems='center'
 
-      >
-                  {item.topics.map((topic: String, i: Key) => {
-                    return (<Badge key={i} color={blue} variant='outline' >{topic}</Badge>)
-                  })}
-                </Flex>
-<Spacer />
-                <HStack>
-                  {item.itemType === 'Code' ?
-                    <ChakraLink isExternal href={item.url + '#readme'} >
-                      <Button aria-label="Link to Source Code" size='xs' variant='solid' borderRadius={3} colorScheme='gray' leftIcon={<BsGithub />}>
-                        Source
-                      </Button>
-                    </ChakraLink> : null
-                  }
-                  {item.itemType === 'Code' ?
-                    <ChakraLink isExternal href={item.homepageUrl}>
-                      <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<LinkIcon />}>
-                        Demo
-                      </Button>
-                    </ChakraLink> : null
-                  }
-                  {item.itemType === 'Writing' ?
-                    <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<FaDev />}>
-                        Article
-                      </Button>
-                    </ChakraLink> : null
-                  }
-                  {item.itemType === 'Work' ?
-                    <ChakraLink isExternal href={item.url}>
-                      <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsGlobe />}>
-                        URL
-                      </Button>
-                    </ChakraLink> : null
-                  }
-                </HStack>
+                  >
+                    {item.topics.map((topic: String, i: Key) => {
+                      return (<Badge key={i} color={blue} variant='outline' >{topic}</Badge>)
+                    })}
+                  </Flex>
+                  <Spacer />
+                  <HStack>
+                    {item.itemType === 'Code' ?
+                      <ChakraLink isExternal href={item.url + '#readme'} >
+                        <Button aria-label="Link to Source Code" size='xs' variant='solid' borderRadius={3} colorScheme='gray' leftIcon={<BsGithub />}>
+                          Source
+                        </Button>
+                      </ChakraLink> : null
+                    }
+                    {item.itemType === 'Code' ?
+                      <ChakraLink isExternal href={item.homepageUrl}>
+                        <Button aria-label="Link to Demo" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<LinkIcon />}>
+                          Demo
+                        </Button>
+                      </ChakraLink> : null
+                    }
+                    {item.itemType === 'Writing' ?
+                      <ChakraLink isExternal href={item.url}>
+                        <Button aria-label="Link to Article" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<FaDev />}>
+                          Article
+                        </Button>
+                      </ChakraLink> : null
+                    }
+                    {item.itemType === 'Work' ?
+                      <ChakraLink isExternal href={item.url}>
+                        <Button aria-label="Link to Website" size='xs' variant='solid' borderRadius={3} color='white' bgColor='blue' leftIcon={<BsGlobe />}>
+                          URL
+                        </Button>
+                      </ChakraLink> : null
+                    }
+                  </HStack>
                 </Flex>
 
 
